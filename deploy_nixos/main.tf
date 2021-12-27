@@ -33,6 +33,18 @@ variable "ssh_agent" {
   default     = null
 }
 
+variable "bastion_host" {
+  type = string
+}
+
+variable "bastion_user" {
+  type = string
+}
+
+variable "bastion_private_key" {
+  type = string
+}
+
 variable "NIX_PATH" {
   type        = string
   description = "Allow to pass custom NIX_PATH"
@@ -159,6 +171,10 @@ resource "null_resource" "deploy_nixos" {
     agent       = local.ssh_agent
     timeout     = "100s"
     private_key = local.ssh_private_key == "-" ? "" : local.ssh_private_key
+
+    bastion_host = var.bastion_host
+    bastion_user = var.bastion_user
+    bastion_private_key = var.bastion_private_key
   }
 
   # copy the secret keys to the host
