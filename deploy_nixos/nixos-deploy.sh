@@ -44,6 +44,9 @@ set -- "${@:1:$(($# - 1))}"
 buildArgs+=("$@")
 
 sshOpts+=( -p "${targetPort}" )
+if [[ ! -z "${bastionHost}" && ! -z "${bastionUser}" ]];
+    sshOpts+=( -J "${bastionUser}@${bastionHost}" )
+fi
 
 workDir=$(mktemp -d)
 trap 'rm -rf "$workDir"' EXIT
@@ -73,7 +76,7 @@ targetHostCmd() {
   # Tested with OpenSSH_7.9p1.
   #
   # shellcheck disable=SC2029
-  ssh "${sshOpts[@]}" $([ -z "$bastionHost" ] && echo "" || echo "-J $bastionUser@$bastionHost") "$targetHost" "./maybe-sudo.sh ${*@Q}"
+  ssh "${sshOpts[@]}" "$targetHost" "./maybe-sudo.sh ${*@Q}"
 }
 
 # Setup a temporary ControlPath for this session. This speeds-up the
