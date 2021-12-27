@@ -44,7 +44,7 @@ set -- "${@:1:$(($# - 1))}"
 buildArgs+=("$@")
 
 sshOpts+=( -p "${targetPort}" )
-if [[ ! -z "${bastionHost}" && ! -z "${bastionUser}" ]];
+if [[ ! -z "${bastionHost}" && ! -z "${bastionUser}" ]]; then
     sshOpts+=( -J "${bastionUser}@${bastionHost}" )
 fi
 
