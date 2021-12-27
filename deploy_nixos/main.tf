@@ -178,7 +178,7 @@ resource "null_resource" "deploy_nixos" {
 
     bastion_host = var.bastion_host
     bastion_user = var.bastion_user
-    bastion_private_key = var.bastion_private_key
+    bastion_private_key = local.ssh_private_key == "-" ? "" : local.ssh_private_key
   }
 
   # copy the secret keys to the host
