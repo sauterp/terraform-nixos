@@ -15,6 +15,10 @@ variable "target_port" {
   default     = 22
 }
 
+variable "ssh_connection_timeout" {
+  type = string
+}
+
 variable "ssh_private_key" {
   type        = string
   description = "Content of private key used to connect to the target_host"
@@ -169,7 +173,7 @@ resource "null_resource" "deploy_nixos" {
     port        = var.target_port
     user        = var.target_user
     agent       = local.ssh_agent
-    timeout     = "100s"
+    timeout     = var.ssh_connection_timeout
     private_key = local.ssh_private_key == "-" ? "" : local.ssh_private_key
 
     bastion_host = var.bastion_host
@@ -215,7 +219,10 @@ resource "null_resource" "deploy_nixos" {
       "switch",
       var.delete_older_than,
       ],
-      local.extra_build_args
+      local.extra_build_args,
+      var.bastion_host,
+      var.bastion_user,
+      var.bastion_private_key
     )
     command = "ignoreme"
   }

@@ -34,6 +34,9 @@ buildOnTarget="$5"
 sshPrivateKey="$6"
 action="$7"
 deleteOlderThan="$8"
+bastionHost="$9"
+bastionUser="$10"
+bastionPrivateKey="$11"
 shift 8
 
 # remove the last argument
@@ -70,7 +73,7 @@ targetHostCmd() {
   # Tested with OpenSSH_7.9p1.
   #
   # shellcheck disable=SC2029
-  ssh "${sshOpts[@]}" "$targetHost" "./maybe-sudo.sh ${*@Q}"
+  ssh "${sshOpts[@]}" $([ -z "$bastionHost" ] && echo "" || echo "-J $bastionUser@$bastionHost") "$targetHost" "./maybe-sudo.sh ${*@Q}"
 }
 
 # Setup a temporary ControlPath for this session. This speeds-up the
