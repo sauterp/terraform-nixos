@@ -37,7 +37,7 @@ deleteOlderThan="$8"
 bastionHost="$9"
 bastionUser="$10"
 bastionPrivateKey="$11"
-shift 8
+shift 11
 
 # remove the last argument
 set -- "${@:1:$(($# - 1))}"
