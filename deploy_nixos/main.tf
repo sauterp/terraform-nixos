@@ -219,12 +219,12 @@ resource "null_resource" "deploy_nixos" {
       "switch",
       var.delete_older_than,
       ],
-      local.extra_build_args,
       [
         var.bastion_host,
         var.bastion_user,
         var.bastion_private_key
-      ]
+      ],
+      local.extra_build_args
     )
     command = "ignoreme"
   }
